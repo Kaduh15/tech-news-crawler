@@ -35,7 +35,27 @@ def scrape_next_page_link(html_content):
 
 # Requisito 4
 def scrape_news(html_content):
-    """Seu código deve vir aqui"""
+    html = Selector(text=html_content)
+    url = html.css("head > link[rel='canonical'] ::attr(href)").get()
+    title = html.css("h1.entry-title ::text").get().strip()
+    writer = html.css("a.url.fn.n ::text").get()
+    timestamp = html.css("li.meta-date ::text").get()
+    reading_time = int(
+        html.css("li.meta-reading-time ::text").get().split(" ")[0]
+    )
+    category = html.css("span.label ::text").get()
+    summary = html.css("div.entry-content > p:nth-of-type(1) *::text").getall()
+
+    data = {
+        "url": url,
+        "title": title,
+        "writer": writer,
+        "timestamp": timestamp,
+        "reading_time": reading_time,
+        "summary": "".join(summary).strip(),
+        "category": category,
+    }
+    return data
 
 
 # Requisito 5
@@ -45,4 +65,5 @@ def get_tech_news(amount):
 
 if __name__ == "__main__":
     html = fetch("https://blog.betrybe.com/")
-    scrape_updates(html)
+    links = scrape_updates(html)
+    print(scrape_news(fetch(links[9])))
