@@ -1,7 +1,8 @@
 # Requisito 1
-from time import sleep
 import requests
+from time import sleep
 from requests.exceptions import ConnectionError, ReadTimeout
+from parsel import Selector
 
 
 def fetch(url):
@@ -20,7 +21,9 @@ def fetch(url):
 
 # Requisito 2
 def scrape_updates(html_content):
-    """Seu código deve vir aqui"""
+    html = Selector(text=html_content)
+    links = html.css("a.cs-overlay-link ::attr(href)").getall()
+    return links
 
 
 # Requisito 3
@@ -36,3 +39,8 @@ def scrape_news(html_content):
 # Requisito 5
 def get_tech_news(amount):
     """Seu código deve vir aqui"""
+
+
+if __name__ == "__main__":
+    html = fetch("https://blog.betrybe.com/")
+    scrape_updates(html)
