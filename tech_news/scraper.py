@@ -64,13 +64,12 @@ def scrape_news(html_content):
 def get_tech_news(amount):
     news_list = []
     html = fetch("https://blog.betrybe.com/")
-    while True:
+    while len(news_list) != amount:
         links_news = scrape_updates(html)
-        news = [scrape_news(fetch(link)) for link in links_news]
-        news_list.extend(news)
-        if len(news_list) > amount:
-            news_list = news_list[:amount]
-            break
+        for link in links_news:
+            if len(news_list) == amount:
+                break
+            news_list.append(scrape_news(fetch(link)))
         html = fetch(scrape_next_page_link(html))
 
     create_news(news_list)
