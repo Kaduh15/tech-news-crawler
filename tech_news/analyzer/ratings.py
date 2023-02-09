@@ -13,4 +13,3 @@ def top_5_categories():
     )
 
     return [category[0] for category in sorted_categories]
-
