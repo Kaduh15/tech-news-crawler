@@ -4,6 +4,8 @@ from time import sleep
 from requests.exceptions import ConnectionError, ReadTimeout
 from parsel import Selector
 
+from tech_news.database import create_news
+
 
 def fetch(url):
     sleep(1)
@@ -44,7 +46,7 @@ def scrape_news(html_content):
         html.css("li.meta-reading-time ::text").get().split(" ")[0]
     )
     category = html.css("span.label ::text").get()
-    summary = html.css("div.entry-content > p:nth-of-type(1) *::text").getall()
+    summary = html.css("div.entry-content > p:nth-of-type(1) ::text").getall()
 
     data = {
         "url": url,
@@ -60,10 +62,20 @@ def scrape_news(html_content):
 
 # Requisito 5
 def get_tech_news(amount):
-    """Seu código deve vir aqui"""
+    news_list = []
+    html = fetch("https://blog.betrybe.com/")
+    while True:
+        links_news = scrape_updates(html)
+        news = [scrape_news(fetch(link)) for link in links_news]
+        news_list.extend(news)
+        if len(news_list) > amount:
+            news_list = news_list[:amount]
+            break
+        html = fetch(scrape_next_page_link(html))
+
+    create_news(news_list)
+    return news_list
 
 
 if __name__ == "__main__":
-    html = fetch("https://blog.betrybe.com/")
-    links = scrape_updates(html)
-    print(scrape_news(fetch(links[9])))
+    print(get_tech_news(5))
