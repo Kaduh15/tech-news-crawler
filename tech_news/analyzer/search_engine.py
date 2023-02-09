@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime as Date
 from tech_news.database import find_news
 # from tech_news.scraper import get_tech_news
 
@@ -22,16 +22,17 @@ def search_by_title(title):
 # Requisito 8
 def search_by_date(date):
     list_news = find_news()
-    if len(date.split('-')[-1]) == 4:
-        format_date = datetime.strptime(date, '%d-%m-%Y')
-    else:
-        format_date = datetime.strptime(date, '%Y-%m-%d')
+    try:
+        format_date = Date.strptime(date, '%Y-%m-%d')
+    except ValueError:
+        raise ValueError('Data inválida')
 
     news_filtered = []
     for news in list_news:
-        date_news = datetime.strptime(news['timestamp'], '%d/%m/%Y').date()
+        date_news = Date.strptime(news['timestamp'], '%d/%m/%Y')
         if format_date == date_news:
             news_filtered.append((news['title'], news['url']))
+
     return news_filtered
 
 
