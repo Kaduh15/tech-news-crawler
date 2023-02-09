@@ -39,7 +39,3 @@ def search_by_date(date):
 # Requisito 9
 def search_by_category(category):
     return search_advanced_news("category", category)
-
-
-if __name__ == '__main__':
-    search_by_date("03-02-2023")
