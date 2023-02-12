@@ -1,5 +1,4 @@
 import os
-from rich import print
 from tech_news.menu import analyzer_menu
 from tech_news.color_terminal import color_green as cg, color_red as cr
 

@@ -1,5 +1,4 @@
 import os
-from rich import print
 from tech_news.analyzer.ratings import top_5_categories
 from tech_news.analyzer.search_engine import (
     search_by_category,
@@ -15,14 +14,18 @@ def popula_banco_de_dados():
     os.system('clear') or None
     amount = int(input("Digite quantas notícias serão buscadas: "))
     os.system('clear') or None
-    print(f'buscando todas as {amount} notícias, aguarde...')
+    print(f'Buscando todas as {amount} notícias, aguarde...')
     get_tech_news(amount)
+    return 'Busca finalizada'
 
 
 def busca_por_titulo():
     titulo = input("Digite o título: ")
-
-    return search_by_title(titulo)
+    result = search_by_title(titulo)
+    text = f'\n {"RESULTADO DA BUSCA POR TITULO"} \n\n'
+    for news in result:
+        text += f'{news[0]} -> {news[1]} \n\n'
+    return text
 
 
 def busca_por_data():
@@ -37,7 +40,7 @@ def busca_por_categoria():
     print(categories)
     categoria = input("Digite uma das categorias a cima: ")
     result = search_by_category(categoria)
-    text = f'\n {"RESULTADO DA BUSCA POR CATEGORIA"} \n\n'
+    text = f'\n {cy("RESULTADO DA BUSCA POR CATEGORIA")} \n\n'
     for news in result:
         text += f'{news[0]} -> {news[1]} \n\n'
     return text
@@ -75,7 +78,7 @@ def analyzer_menu():
     )
 
     while not (option in OPTIONS):
-        print(cr('Opção inválida'))
+        print(f'{cy("Opção inválida")} texto digitado: {cr(option)}')
         option = input(
             f'Digite um valor entre {cy("0")} e {cy("5")}: '
         )
