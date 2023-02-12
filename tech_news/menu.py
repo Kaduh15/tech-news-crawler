@@ -1,4 +1,5 @@
 import os
+from rich import print
 from tech_news.analyzer.ratings import top_5_categories
 from tech_news.analyzer.search_engine import (
     search_by_category,
@@ -6,15 +7,16 @@ from tech_news.analyzer.search_engine import (
     search_by_title,
 )
 from tech_news.color_terminal import color_red as cr, color_yellow as cy
+from tech_news.database import find_news
 from tech_news.scraper import get_tech_news
 
 
 def popula_banco_de_dados():
+    os.system('clear') or None
     amount = int(input("Digite quantas notícias serão buscadas: "))
     os.system('clear') or None
     print(f'buscando todas as {amount} notícias, aguarde...')
     get_tech_news(amount)
-    print('Busca Finalizada')
 
 
 def busca_por_titulo():
@@ -30,9 +32,15 @@ def busca_por_data():
 
 
 def busca_por_categoria():
-    categoria = input("Digite a categoria: ")
-
-    return search_by_category(categoria)
+    news = find_news()
+    categories = set([news["category"] for news in news])
+    print(categories)
+    categoria = input("Digite uma das categorias a cima: ")
+    result = search_by_category(categoria)
+    text = f'\n {"RESULTADO DA BUSCA POR CATEGORIA"} \n\n'
+    for news in result:
+        text += f'{news[0]} -> {news[1]} \n\n'
+    return text
 
 
 def top_5():
@@ -72,4 +80,4 @@ def analyzer_menu():
             f'Digite um valor entre {cy("0")} e {cy("5")}: '
         )
 
-    return OPTIONS[int(option)]()
+    return [option, OPTIONS[option]]
