@@ -30,8 +30,11 @@ def busca_por_titulo():
 
 def busca_por_data():
     date = input("Digite a data no formato aaaa-mm-dd: ")
-
-    return search_by_date(date)
+    result = search_by_date(date)
+    text = f'\n {"RESULTADO DA BUSCA POR TITULO"} \n\n'
+    for news in result:
+        text += f'{news[0]} -> {news[1]} \n\n'
+    return text
 
 
 def busca_por_categoria():
