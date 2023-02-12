@@ -9,6 +9,11 @@ Este projeto tem como objetivo principal realizar consultas em notícias sobre t
     - Extrair dados de conteúdo HTML
     - Armazenar os dados obtidos em um banco de dados
     
+## Requisitos
+    - Python 3.x
+    - Docker ou mongoDB
+    - Bibliotecas especificadas no arquivo dev-requirements.txt
+    
 ## Começando
 Clone o repositório:
 
@@ -31,5 +36,25 @@ python3 -m venv .venv && source .venv/bin/activate
 python3 -m pip install -r dev-requirements.txt
 ```
 
-## Uso
+## Banco de dados
+Para a realização deste projeto, será utilizado um banco de dados MongoDB, com nome tech_news. As notícias serão armazenadas em uma coleção chamada news.
+
+### Rodando MongoDB via Docker
+
+```bash
+docker-compose up -d mongodb
+```
+
+Para mais detalhes acerca do MongoDB com o Docker, consulte o arquivo docker-compose.yml.
+
+### Instalando MongoDB nativo
+Para instalar e rodar o servidor MongoDB nativo na máquina, siga as instruções nos tutoriais oficiais:
+
+Ubuntu: [Site Oficial](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
+
+MacOS: [Site Oficial](https://docs.mongodb.com/guides/server/install/)
+
+Lembre-se de que o MongoDB utilizará a porta 27017 por padrão. Se já houver outro serviço utilizando esta porta, considere desativá-lo.
+
+## Execultando o Projeto
 Para rodar o projeto, execute o arquivo principal com o comando `python3 -m tech_news.main`.
