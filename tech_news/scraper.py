@@ -1,12 +1,14 @@
-# Requisito 1
+import os
 import requests
 from time import sleep
-from requests.exceptions import ConnectionError, ReadTimeout
 from parsel import Selector
+from requests.exceptions import ConnectionError, ReadTimeout
 
 from tech_news.database import create_news
+from tech_news.color_terminal import color_red as cr
 
 
+# Requisito 1
 def fetch(url):
     sleep(1)
     try:
@@ -67,15 +69,25 @@ def get_tech_news(amount):
 
     while len(news_list) != amount:
         links_news = scrape_updates(html)
-        for link in links_news:
-            if len(news_list) == amount:
-                break
-            news_list.append(scrape_news(fetch(link)))
+        append_news(amount, news_list, links_news)
         html = fetch(scrape_next_page_link(html))
 
-    create_news(news_list)
+    try:
+        create_news(news_list)
+    except Exception:
+        print(f"{cr('ERROR:')} ao salvar as notícias no banco de dados")
+        return
     return news_list
 
 
-if __name__ == "__main__":
-    print(get_tech_news(5))
+def append_news(amount, news_list, links_news):
+    """
+    Adiciona as notícias na lista de notícias
+    """
+    for link in links_news:
+        if len(news_list) == amount:
+            break
+        news_list.append(scrape_news(fetch(link)))
+        os.system('clear') or None
+        print(f'buscando todas as {amount} notícias, aguarde...')
+        print(f'notícias encontradas: {len(news_list)}')
