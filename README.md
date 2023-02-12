@@ -15,17 +15,21 @@ Clone o repositório:
 ```bash
 git clone https://github.com/Kaduh15/tech-news-crawler.git
 ```
-Entre na pasta do repositório:
+### Entre na pasta do repositório:
 
 ```bash
-Copy code
-cd tech-news-crawler```
-Crie o ambiente virtual para o projeto:
+cd tech-news-crawler
+```
 
-bash
-Copy code
+### Crie o ambiente virtual para o projeto:
+```bash
 python3 -m venv .venv && source .venv/bin/activate
-Instale as dependências:
+```
 
-Copy code
+### Instale as dependências:
+```python
 python3 -m pip install -r dev-requirements.txt
+```
+
+## Uso
+Para rodar o projeto, execute o arquivo principal com o comando `python3 -m tech_news.main`.
